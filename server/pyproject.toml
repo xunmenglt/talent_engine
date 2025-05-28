@@ -1,0 +1,37 @@
+[project]
+name = "talent-engine"
+version = "0.1.0"
+description = "szrcb talent engine"
+readme = "README.md"
+requires-python = "==3.10.*"
+dependencies = [
+    "chromadb>=0.6.3",
+    "conda-pack>=0.8.1",
+    "dataclass-wizard==0.22.3",
+    "datasets==2.18.0",
+    "fastapi>=0.115.12",
+    "jinja2>=3.1.6",
+    "langchain>=0.3.25",
+    "langchain-community>=0.3.16",
+    "langchain-openai>=0.3.18",
+    "nltk>=3.9.1",
+    "numpy==1.24.4",
+    "openai>=1.82.0",
+    "opencv-python>=4.11.0.86",
+    "pillow>=11.2.1",
+    "pydantic>=2.11.4",
+    "pymupdf>=1.25.5",
+    "pymysql>=1.1.1",
+    "python-docx>=1.1.2",
+    "python-multipart>=0.0.20",
+    "pyyaml==6.0.1",
+    "rapidocr-onnxruntime>=1.4.4",
+    "requests==2.31.0",
+    "sentence-transformers>=4.1.0",
+    "sql-metadata>=2.17.0",
+    "sse-starlette==1.8.2",
+    "sseclient-py>=1.8.0",
+    "torch==2.2.0",
+    "tqdm==4.66.2",
+    "unstructured>=0.17.2",
+]

@@ -1,0 +1,55 @@
+# 向量数据库配置
+vector_store:
+  type: chroma
+  name: rag
+  host:
+  port:
+  user:
+  password:
+  kwargs: {
+    "search_params":{"metric_type": "IP","params":{"ef": 128}},
+    "index_params":{"metric_type": "IP", "index_type":"HNSW", "params": {"M": 16, "efConstruction": 200}}
+  }
+
+# 知识库配置
+knowledge_base:
+  base_storage_path: /opt/data/private/liuteng/code/szrcb/talent_engine/data/knowledge_base
+  name: talent_engine_deepseek_02
+
+# 大模型配置
+llm: 
+  api_key: sk-d6141432453d47bf98703228199d4cf9
+  base_url: https://api.deepseek.com/v1
+  model_name: deepseek-chat
+  temperature: 1.5
+  max_tokens: 10000
+  model_engine: openai
+
+# embedding模型配置
+embeddings:
+  model_name_or_path: text-embedding-3-small
+  model_engine: openai
+  dimensions: 1024
+  device: cuda:4
+  base_url: "https://api.vveai.com/v1"
+  api_key: "sk-uHVUAlU35OdVvwMe99D9D8D8D5Ce4f28921064D456D131E9"
+
+# reranker模型配置
+reranker:
+  model_name_or_path: /opt/data/private/liuteng/model/BAAI/bge-reranker-large
+  type: rank
+  device: cuda:4
+
+# server配置
+server:
+  api_server_host: 0.0.0.0
+  api_server_port: 8888
+
+database:
+  db_type: mysql
+  host: 10.10.80.67
+  port: 3318
+  user: root
+  password: hjr
+  database: talent_engine
+  echo: true

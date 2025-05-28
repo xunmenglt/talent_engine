@@ -1,0 +1,1 @@
+{"question": "请列出2023年绩效考核等级为A的北京总部员工", "model_response": "```json\n{\n question\": \"查询2023年参加过国家级活动且获得奖项的员工姓名及其活动名称\",\n  \"sql\": \"SELECT DISTINCT a.EMP_NAME, a.activity_name FROM t_hx_join_activity a WHERE a.is_reword = '1' AND a.sponsor_level = '国家级' AND YEAR(a.activity_start_time) = 2023;\",\n  \"tables\": [\"t_hx_join_activity\"]\n}\n```"}
