@@ -64,6 +64,8 @@ class SQLChatChain(BaseRetrievalChain):
             queries.append(query)
         else:
             queries = await asyncio.to_thread(plan_formulation,self.sql_client.get_markdown_create_table_schema(),query,self.llm)
+        if len(queries)>1:
+            queries.append(query)
         await self.put_message(PlanFormulationMessage(id=self.uuid,content=PlanFormulationMessage.PlanFormationContent(plan_list=queries)))
         return queries
 
@@ -185,6 +187,7 @@ class SQLChatChain(BaseRetrievalChain):
                 await self.put_message(ErrorMessage(id=self.uuid,content="预生成SQL失败"))
                 continue
             sql=sql_data.query
+            pre_sql=sql
             await self.put_message(PreGeneratedSqlMessage(id=self.uuid,
                                                     content=PreGeneratedSqlMessage.PreGeneratedSqlContent(sql_data=sql_data),
                                                     question_index=idx))
@@ -199,14 +202,22 @@ class SQLChatChain(BaseRetrievalChain):
             sql_example_data= await self.create_real_sql(question,example_sql_datas)
             if sql_example_data is None:
                 await self.put_message(ErrorMessage(id=self.uuid,content="真实SQL构建失败"))
-                continue
+                await self.put_message(TipMessage(id=self.uuid,content="预生成SQL替换"))
+                sql=pre_sql
             else:
                 await self.put_message(RealSqlBuildMessage(id=self.uuid,content=RealSqlBuildMessage.RealSqlBuildContent(sql_data=sql_example_data),question_index=idx))
+                sql=sql_example_data.query
             # sql校验，校验里面有重写
             await self.put_message(TipMessage(id=self.uuid,content="SQL语句校验"))
             sql,exec_res=await self.sql_check(sql)
+            # 预计生成语句结果
+            pre_sql,pre_sql_exec_res=await self.sql_check(pre_sql)
             await self.put_message(SqlExecutionResultMessage(id=self.uuid,content=SqlExecutionResultMessage.SqlExecutionResultContent(sql=sql,exec_res=exec_res),question_index=idx))
             sql_exec_res_list.append((question,sql,exec_res))
+            if sql!=pre_sql:
+                await self.put_message(SqlExecutionResultMessage(id=self.uuid,content=SqlExecutionResultMessage.SqlExecutionResultContent(sql=pre_sql,exec_res=pre_sql_exec_res),question_index=idx))
+                sql_exec_res_list.append((question,pre_sql,pre_sql_exec_res))
+
 
         # 模型回复结果
         await self.model_reply(query, sql_exec_res_list)

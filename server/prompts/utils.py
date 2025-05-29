@@ -182,7 +182,7 @@ def generate_sql_direct(sql_schema,sql_example_data,question,llm,sql_client,re_t
         if fixed_sql:
             res["sql"]=fixed_sql
             res["sql_execute_res"]=fix_sql_execute_res
-            end_res=res
+        end_res=res
     if end_res:
         end_res=SQLExampleData(
                 schamea=sql_schema,

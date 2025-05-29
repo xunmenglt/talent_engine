@@ -313,7 +313,7 @@ const handleSendMessage = async () => {
         query: userMessage.content,
         history: messageHistory.value,
         question_score_threshold: 0.8,
-        sql_score_threshold: 0.8,
+        sql_score_threshold: 0.5,
         topk: 5,
         is_planing: true,
         sql_verfy_times: 2
